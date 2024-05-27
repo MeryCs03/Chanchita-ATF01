@@ -1,14 +1,11 @@
 package pe.edu.utp.ATF01.service;
 
 import pe.edu.utp.ATF01.model.Chanchita;
+import pe.edu.utp.ATF01.model.Deposito;
 import pe.edu.utp.ATF01.utils.DataAccessMariaDB;
 
 import javax.naming.NamingException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ATF1service {
     private Connection cnn;
@@ -47,7 +44,26 @@ public class ATF1service {
             cerrarConexion();
         }
     }
-    //falta agregar el metodo de registrar deposito
+
+    public void RegistrarDeposito(Deposito dep) throws SQLException {
+        try {
+            String sql = "CALL RegistrarDeposito(?,?,?,?,?)";
+            try (CallableStatement cs = cnn.prepareCall(sql)) {
+                cs.setLong(1, Long.parseLong(dep.getNumero_Cuenta()));
+                Timestamp timestamp = Timestamp.valueOf(dep.getFechaHora());
+                cs.setTimestamp(2, timestamp);
+                cs.setString(3, dep.getNombrePersona());
+                cs.setDouble(4, dep.getMonto());
+                cs.setString(5, dep.getDetalle());
+                cs.execute();
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error al registrar Deposito: " + e.getMessage());
+        } finally {
+            cerrarConexion();
+        }
+    }
+
 
     public Chanchita BuscarChanchita(String NombreChanchita, String NumeroCuenta) throws SQLException {
         Chanchita chanchita = null;
