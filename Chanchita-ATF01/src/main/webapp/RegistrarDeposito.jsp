@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: USUARIO
-  Date: 26/05/2024
-  Time: 11:42
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -16,8 +9,8 @@
 <body>
 <h1>Registrar Deposito</h1>
 <form action="RegistrarDeposito" method="post">
-    <label for="numero_Cuenta">Número de Cuenta:</label>
-    <input type="text" id="numero_Cuenta" name="numero_Cuenta" required><br><br>
+    <label for="numero_cuenta">Número de Cuenta:</label>
+    <input type="text" id="numero_cuenta" name="numero_cuenta" required><br><br>
 
     <label for="fechaHora">Fecha y Hora:</label>
     <input type="datetime-local" id="fechaHora" name="fechaHora" required><br><br>
