@@ -1,11 +1,15 @@
 package pe.edu.utp.ATF01.service;
 
-import pe.edu.utp.ATF01.model.Chanchita;
 import pe.edu.utp.ATF01.model.Deposito;
+import pe.edu.utp.ATF01.model.response.BuscarDepositos;
 import pe.edu.utp.ATF01.utils.DataAccessMariaDB;
 
 import javax.naming.NamingException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ATF1service {
     private Connection cnn;
@@ -65,20 +69,37 @@ public class ATF1service {
     }
 
 
-    public Chanchita BuscarChanchita(String NombreChanchita, String NumeroCuenta) throws SQLException {
-        Chanchita chanchita = null;
-        String sql = "CALL BuscarChanchita(?, ?)";
+    public BuscarDepositos BuscarChanchita(Long NumeroCuenta) throws SQLException {
+        String nombre_chanchita = "";
+        String sql = "CALL BuscarDepositosPorNumeroCuenta(?)";
         try (PreparedStatement pstmt = cnn.prepareStatement(sql)) {
-            pstmt.setString(1, NombreChanchita);
-            pstmt.setString(2, NumeroCuenta);
+            pstmt.setLong(1, NumeroCuenta);
             try (ResultSet rst = pstmt.executeQuery()) {
                 if (rst.next()) {
-                    String Nombre_Chanchita = rst.getString("NombreChanchita");
-                    long NroCuenta = rst.getLong("NumeroCuenta");
-                    chanchita = new Chanchita(Nombre_Chanchita, NroCuenta);
+                    nombre_chanchita = rst.getString("Nombre");
                 }
             }
+            boolean hayDepositos = pstmt.getMoreResults();
+            List<Deposito> depositos = new ArrayList<>();
+            if (hayDepositos) {
+                try (ResultSet rst = pstmt.getResultSet()) {
+                    while (rst.next()) {
+                        String nombrePersona = rst.getString("Nombre");
+                        Timestamp fechaTimestamp = rst.getTimestamp("Fecha");
+                        LocalDateTime fechaHora = fechaTimestamp.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime();
+                        String detalle = rst.getString("Detalle");
+                        double monto = rst.getDouble("Monto");
+                        depositos.add(new Deposito(fechaHora, nombrePersona, monto, detalle));
+                    }
+                }
+            }
+            return new BuscarDepositos(nombre_chanchita, depositos);
+        } catch (SQLException e) {
+            throw new SQLException("Error al registrar Deposito: " + e.getMessage());
+        } finally {
+            cerrarConexion();
         }
-        return chanchita;
     }
 }

@@ -27,11 +27,17 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DELIMITER //
-CREATE PROCEDURE `BuscarChanchitaPorNombre`(
-    IN pNombre VARCHAR(255)
+CREATE PROCEDURE `BuscarDepositosPorNumeroCuenta`(
+    IN pNumeroCuenta BIGINT
 )
 BEGIN
-    SELECT * FROM Chanchita WHERE Nombre = pNombre;
+    SELECT Nombre
+    FROM Chanchita c
+    WHERE c.NumeroCuenta = pNumeroCuenta;
+
+    SELECT d.NombrePersona as 'Nombre', d.FechaHora as 'Fecha', d.Detalle, d.Monto
+    FROM Deposito d
+    WHERE d.NumeroCuenta = pNumeroCuenta;
 END//
 DELIMITER ;
 
@@ -75,10 +81,10 @@ NOT DETERMINISTIC
 CONTAINS SQL
 SQL SECURITY DEFINER
 COMMENT 'Obtiene el usuario que cumple el criterio de tener el email y la clave suministrada'
-
+BEGIN
 	SELECT login, email, fullname 
 	FROM usuario 
-	WHERE email = pEmail AND pwd = pClave 
+	WHERE email = pEmail AND password = pClave 
 	LIMIT 1;
 END //
 

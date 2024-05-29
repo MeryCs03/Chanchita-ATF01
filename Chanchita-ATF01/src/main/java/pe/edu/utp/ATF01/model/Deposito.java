@@ -20,6 +20,13 @@ public class Deposito {
         this.detalle = detalle;
     }
 
+    public Deposito(LocalDateTime fechaHora, String nombrePersona, double monto, String detalle) {
+        this.fechaHora = fechaHora;
+        this.nombrePersona = nombrePersona;
+        this.monto = monto;
+        this.detalle = detalle;
+    }
+
     public String getDetalle() {
         return detalle;
     }
