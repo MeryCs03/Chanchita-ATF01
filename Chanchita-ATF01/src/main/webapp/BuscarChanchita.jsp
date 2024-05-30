@@ -50,11 +50,11 @@
     <form action="BuscarChanchita" method="post">
         <input type="text" placeholder="Ingrese número de cuenta" name="nroCuenta">
     </form>
-    <h1>${nombre_chanchita}</h1>
-    <h2>${nroCuenta}</h2>
 </div>
 <table>
     <tbody>
+    <h1>${nombre_chanchita}</h1>
+    <h2>${nroCuenta}</h2>
     ${tablaEncabezado}
     ${table}
     </tbody>
