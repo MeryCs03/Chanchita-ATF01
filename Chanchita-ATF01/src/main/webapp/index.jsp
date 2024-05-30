@@ -65,6 +65,9 @@
                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="submit">Login</button>
                 </div>
             </div>
+            <div class="pt-1 mb-4">
+                <a class="nav-link" href="registrarUsuario.jsp">Registrate</a>
+            </div>
         </form>
     </div>
 
