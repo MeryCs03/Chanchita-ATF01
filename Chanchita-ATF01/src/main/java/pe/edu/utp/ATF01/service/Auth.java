@@ -48,21 +48,6 @@ public class Auth {
     }
 
     
-    public static boolean isValidUser(String email, String pwd)
-            throws SQLException, NamingException, IOException {
-        String strSQL = String.format("CALL pr_checkUser('%s','%s')", email, md5(pwd));
-        // 1. Enviar al archivo log la sentencia sql
-        LogFile.info(strSQL);
-        // 2. Crear conexion BD con datasource
-        Connection cnn = DataAccessMariaDB.getConnection(DataAccessMariaDB.TipoDA.DATASOURCE,
-                AppConfig.getDatasource());
-
-        ResultSet rst = cnn.createStatement().executeQuery(strSQL);
-        String res = (rst.next()) ? rst.getString("login") : "no_data";
-        cnn.close();
-        return !res.equals("no_data");
-    }
-
     public static boolean isValidChanchita(String NombreChanchita, String NumeroCuenta)
             throws SQLException, NamingException, IOException {
         // Validar que el número de cuenta tenga exactamente 16 dígitos
