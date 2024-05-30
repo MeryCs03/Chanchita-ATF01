@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="pe.edu.utp.ATF01.service.Auth" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Datos</title>
     <link rel="stylesheet" href="form-style.css">
+    <script>
+
+    </script>
 </head>
 <body>
 
@@ -16,23 +19,23 @@
         <form action="RegistrarDeposito" method="post">
 
             <div class="flex flex-col gap-2 mb-6">
-                <label for="numero_cuenta">Número de Cuenta:</label>
-                <input class="form-input" type="text" id="numero_cuenta" name="numero_cuenta" required>
+                <label for="numero_cuenta">Número de Cuenta Destino (cci):</label>
+                <input class="form-input" type="number" id="numero_cuenta" name="numero_cuenta" maxlength="20" required>
             </div>
 
             <div class="flex flex-col gap-2 mb-6">
-                <label for="fechaHora">Fecha y Hora:</label>
-                <input class="form-input" type="datetime-local" id="fechaHora" name="fechaHora" required>
+                <label>Fecha y hora:</label>
+                <label><%= Auth.getDateTime() %></label>
             </div>
 
             <div class="flex flex-col gap-2 mb-6">
                 <label for="nombrePersona">Nombre de la Persona:</label>
-                <input class="form-input" type="text" id="nombrePersona" name="nombrePersona" required>
+                <input class="form-input" type="text" id="nombrePersona" name="nombrePersona" minlength="2" maxlength="20" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" required>
             </div>
 
             <div class="flex flex-col gap-2 mb-6">
                 <label for="monto">Monto:</label>
-                <input class="form-input" type="number" step="0.01" id="monto" name="monto" required>
+                <input class="form-input" type="number" step="0.01" id="monto" name="monto" pattern="[0-9]+" required>
             </div>
 
 
@@ -50,3 +53,4 @@
 
 </body>
 </html>
+
