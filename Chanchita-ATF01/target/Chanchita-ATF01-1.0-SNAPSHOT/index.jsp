@@ -40,19 +40,29 @@
                             <div class="pt-1 mb-4">
                                 <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="submit">Login</button>
                             </div>
+                            <div class="pt-1 mb-4">
+                                <a class="nav-link" href="registrarUsuario.jsp">Registrate</a>
+                            </div>
+
                         </form>
 
                     </div>
 
                 </div>
+
                 <div class="col-sm-6 px-0 d-none d-sm-block">
                     <img src="img/library.png"
                          alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
                 </div>
+
             </div>
         </div>
     </section>
 </div>
+
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js"></script>
+
+
 </body>
 </html>

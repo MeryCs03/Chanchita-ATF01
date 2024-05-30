@@ -1,10 +1,13 @@
 package pe.edu.utp.ATF01.service;
 
 import pe.edu.utp.ATF01.model.Deposito;
-import pe.edu.utp.ATF01.response.BuscarDepositos;
+import pe.edu.utp.ATF01.model.Usuario;
+import pe.edu.utp.ATF01.model.response.BuscarDepositos;
 import pe.edu.utp.ATF01.utils.DataAccessMariaDB;
+import pe.edu.utp.ATF01.utils.LogFile;
 
 import javax.naming.NamingException;
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,7 +24,7 @@ public class ATF1service {
         this.cnn = dao.getConnection();
     }
 
-    public void RegistrarUsuario(Usuario usuario) throws SQLException, NamingException, IOException {
+    public void RegistrarUsuario(Usuario usuario) throws SQLException, NamingException, IOException, IOException {
         String strSQL = String.format("CALL pr_registerUser('%s', '%s', '%s', '%s')",
                 usuario.getLogin(), usuario.getFullname(), usuario.getEmail(), usuario.getPwd());
         LogFile.info(strSQL);

@@ -5,8 +5,11 @@ import pe.edu.utp.ATF01.service.ATF1service;
 import pe.edu.utp.ATF01.service.AppConfig;
 import pe.edu.utp.ATF01.service.Auth;
 import pe.edu.utp.ATF01.utils.DataAccessMariaDB;
+import pe.edu.utp.ATF01.utils.EmailValidator;
 import pe.edu.utp.ATF01.utils.LogFile;
+import pe.edu.utp.ATF01.utils.Validator;
 
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +19,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "RegistrarUsuario", urlPatterns = "/RegistrarUsuario")
 public class RegistrarUsuarioServlet extends HttpServlet {
@@ -26,6 +32,14 @@ public class RegistrarUsuarioServlet extends HttpServlet {
         String fullname = req.getParameter("txtfullname");
         String email = req.getParameter("txtEmail");
         String pwd = req.getParameter("txtpwd");
+
+        Map<String, String> errores = Validator.getErrores(req);
+
+        if( !errores.isEmpty() ){
+            req.setAttribute("errores", errores);
+            getServletContext().getRequestDispatcher("/registrarUsuario.jsp").forward(req, resp);
+            return;
+        }
 
         PrintWriter out = resp.getWriter();
 

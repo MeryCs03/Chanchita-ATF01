@@ -1,7 +1,7 @@
 package pe.edu.utp.ATF01.controller;
 
 
-import pe.edu.utp.ATF01.response.BuscarDepositos;
+import pe.edu.utp.ATF01.model.response.BuscarDepositos;
 import pe.edu.utp.ATF01.service.ATF1service;
 import pe.edu.utp.ATF01.service.AppConfig;
 import pe.edu.utp.ATF01.utils.DataAccessMariaDB;
