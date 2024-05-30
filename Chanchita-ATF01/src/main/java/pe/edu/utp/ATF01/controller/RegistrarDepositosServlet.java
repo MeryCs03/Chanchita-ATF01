@@ -28,19 +28,22 @@ public class RegistrarDepositosServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String numero_cuenta = req.getParameter("numero_cuenta");
-        String fechaHora = req.getParameter("fechaHora");
         String nombrePersona = req.getParameter("nombrePersona");
         String monto = req.getParameter("monto");
         String detalle = req.getParameter("detalle");
 
         // parseo de datos
         double montoParse;
-        LocalDateTime fechaParse;
         PrintWriter out = resp.getWriter();
         try {
             montoParse = Double.parseDouble(monto);
-            fechaParse = LocalDateTime.parse(fechaHora, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            Deposito dep = new Deposito(numero_cuenta, fechaParse, nombrePersona, montoParse, detalle);
+
+            // Para la fecha y hora
+            LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+            // Crear objeto Deposito
+            Deposito dep = new Deposito(numero_cuenta, fechaHoraActual, nombrePersona, montoParse, detalle);
+
             if (Auth.isValidDeposito(dep.getNumero_Cuenta(), dep.getNombrePersona(), dep.getMonto(), dep.getDetalle())) {
 
                 DataAccessMariaDB dao = new DataAccessMariaDB();
@@ -61,3 +64,4 @@ public class RegistrarDepositosServlet extends HttpServlet {
         }
     }
 }
+
