@@ -1,13 +1,14 @@
 package pe.edu.utp.ATF01.service;
 
 import pe.edu.utp.ATF01.model.Deposito;
-import pe.edu.utp.ATF01.model.response.BuscarDepositos;
+import pe.edu.utp.ATF01.response.BuscarDepositos;
 import pe.edu.utp.ATF01.utils.DataAccessMariaDB;
 
 import javax.naming.NamingException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,5 +102,41 @@ public class ATF1service {
         } finally {
             cerrarConexion();
         }
+    }
+    public void generarTablaDepositos(List<Deposito> depositos, StringBuilder sb) {
+        String table = """
+               
+                <tr>
+                <td>{{nombre}}</td>
+                <td>{{fecha}}</td>
+                <td>{{detalle}}</td>
+                <td>{{monto}}</td>
+                </tr>
+                """;
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        for (Deposito deposito : depositos) {
+            String fecha = deposito.getFechaHora().format(fmt);
+            sb.append(
+                    table.replace("{{nombre}}", deposito.getNombrePersona())
+                            .replace("{{fecha}}", fecha)
+                            .replace("{{detalle}}", deposito.getDetalle())
+                            .replace("{{monto}}", String.valueOf(deposito.getMonto()))
+            );
+        }
+    }
+
+    public void generarTotalIngresos(List<Deposito> depositos, StringBuilder sb) {
+        double totalIngresos = depositos.stream().mapToDouble(Deposito::getMonto).sum();
+        String total = """
+                <tr>
+                <td></td>
+                <td></td>
+                <td>Total de Ingresos:</td>
+                <td>{{total}}</td>
+                </tr>
+                """.replace("{{total}}", String.valueOf(totalIngresos));
+
+        sb.append(total);
     }
 }
