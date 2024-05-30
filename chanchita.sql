@@ -5,6 +5,17 @@ CREATE TABLE IF NOT EXISTS `Chanchita` (
   PRIMARY KEY (`NumeroCuenta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--datosChanchita
+INSERT INTO Chanchita (Nombre, NumeroCuenta) VALUES 
+('Pijamada', 1234567890183456), 
+('Pollada', 9176543210987654), 
+('Prueba', 1357924680246801),
+('Cevichada', 2468013579246801), 
+('Sabado de playita', 3692581478523690), 
+('Noche de cine', 8024671357924680);
+
+
+
 -- Volcando estructura para tabla chanchita.Deposito
 CREATE TABLE IF NOT EXISTS `Deposito` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -18,6 +29,16 @@ CREATE TABLE IF NOT EXISTS `Deposito` (
   CONSTRAINT `Deposito_ibfk_1` FOREIGN KEY (`NumeroCuenta`) REFERENCES `Chanchita` (`NumeroCuenta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=LATIN1_SWEDISH_CI;
 
+--datosDepositos
+INSERT INTO Deposito (NumeroCuenta, FechaHora, NombrePersona, Monto, Detalle) VALUES 
+(1234567890183456, '2024-05-30 17:55:38', 'Pijamada', 100.00, 'Depósito de pijamada'),
+ (9176543210987654, '2024-05-30 17:55:38', 'Pollada', 200.00, 'Depósito de pollada'), 
+ (1357924680246801, '2024-05-30 17:55:38', 'Prueba', 150.50, 'Depósito de prueba'), 
+ (2468013579246801, '2024-05-30 17:55:38', 'Cevichada', 300.75, 'Depósito de cevichada'), 
+ (3692581478523690, '2024-05-30 17:55:38', 'Sabado de playita', 180.25, 'Depósito de sábado de playita'), 
+ (8024671357924680, '2024-05-30 17:55:38', 'Noche de cine', 250.30, 'Depósito de noche de cine');
+
+
 CREATE TABLE `usuario` (
 	`login` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	`fullname` VARCHAR(150) NOT NULL COLLATE 'utf8mb4_unicode_ci',
@@ -29,6 +50,8 @@ CREATE TABLE `usuario` (
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
 ;
+
+
 
 DELIMITER //
 CREATE PROCEDURE `BuscarDepositosPorNumeroCuenta`(
