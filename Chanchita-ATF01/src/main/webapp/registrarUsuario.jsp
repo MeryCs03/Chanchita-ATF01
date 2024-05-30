@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Chanchita</title>
+    <title>Registro Usuario</title>
     <style>
         #txtfullname::placeholder {
             color: rgba(0, 0, 0, 0.2); /* Cambia el color y la transparencia del placeholder */

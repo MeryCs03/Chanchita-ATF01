@@ -12,6 +12,42 @@ import java.time.LocalDateTime;
 
 public class Auth {
 
+    public static boolean areUserDetailsValid(String login, String fullname, String email, String pwd) {
+        // Validaciones básicas
+        return login != null && !login.isEmpty() &&
+                fullname != null && !fullname.isEmpty() &&
+                email != null && !email.isEmpty() &&
+                pwd != null && !pwd.isEmpty();
+    }
+
+    // Es para verificar si el correo ingresado no está registrado
+    public static boolean isValidUser(String email, String pwd)  throws SQLException, NamingException, IOException {
+        String strSQL = String.format("CALL pr_checkUser('%s','%s')", email, md5(pwd));
+        // 1. Enviar al archivo log la sentencia sql
+        LogFile.info(strSQL);
+        // 2. Crear conexion BD con datasource
+        Connection cnn = DataAccessMariaDB.getConnection(DataAccessMariaDB.TipoDA.DATASOURCE,
+                AppConfig.getDatasource());
+
+        ResultSet rst = cnn.createStatement().executeQuery(strSQL);
+        String res = (rst.next()) ? rst.getString("login") : "no_data";
+        cnn.close();
+        return !res.equals("no_data");
+    }
+
+    //Para verificar "email" para comprobar si ya está registrado
+    public static boolean doesUserExist(String email) throws SQLException, NamingException, IOException {
+        String strSQL = String.format("CALL pr_checkUserByEmail('%s')", email);
+        LogFile.info(strSQL);
+        Connection cnn = DataAccessMariaDB.getConnection(DataAccessMariaDB.TipoDA.DATASOURCE, AppConfig.getDatasource());
+
+        ResultSet rst = cnn.createStatement().executeQuery(strSQL);
+        boolean exists = rst.next();
+        cnn.close();
+        return exists;
+    }
+
+    
     public static boolean isValidUser(String email, String pwd)
             throws SQLException, NamingException, IOException {
         String strSQL = String.format("CALL pr_checkUser('%s','%s')", email, md5(pwd));
