@@ -54,15 +54,8 @@
     <h2>${nroCuenta}</h2>
 </div>
 <table>
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Fecha</th>
-        <th>Detalle</th>
-        <th>Monto S/</th>
-    </tr>
-    </thead>
     <tbody>
+    ${tablaEncabezado}
     ${table}
     </tbody>
 </table>
