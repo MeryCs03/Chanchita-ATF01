@@ -21,6 +21,14 @@ public class ATF1service {
         this.cnn = dao.getConnection();
     }
 
+    public void RegistrarUsuario(Usuario usuario) throws SQLException, NamingException, IOException {
+        String strSQL = String.format("CALL pr_registerUser('%s', '%s', '%s', '%s')",
+                usuario.getLogin(), usuario.getFullname(), usuario.getEmail(), usuario.getPwd());
+        LogFile.info(strSQL);
+        cnn.createStatement().execute(strSQL);
+        cnn.close();
+    }
+
     public void cerrarConexion() {
         try {
             DataAccessMariaDB.closeConnection(cnn);

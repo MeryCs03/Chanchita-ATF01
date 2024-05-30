@@ -18,13 +18,17 @@ CREATE TABLE IF NOT EXISTS `Deposito` (
   CONSTRAINT `Deposito_ibfk_1` FOREIGN KEY (`NumeroCuenta`) REFERENCES `Chanchita` (`NumeroCuenta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=LATIN1_SWEDISH_CI;
 
-CREATE TABLE IF NOT EXISTS `usuario` (
-  `login` VARCHAR(20) NOT NULL,
-  `fullname` VARCHAR(150) NOT NULL,
-  `email` VARCHAR(150) NOT NULL,
-  `password` CHAR(32) NOT NULL,
-  PRIMARY KEY (`login`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `usuario` (
+	`login` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`fullname` VARCHAR(150) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`email` VARCHAR(150) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`pwd` CHAR(32) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	UNIQUE (`email`),
+	PRIMARY KEY (`login`)	
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
 
 DELIMITER //
 CREATE PROCEDURE `BuscarDepositosPorNumeroCuenta`(
@@ -89,5 +93,38 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+CREATE DEFINER=`chanchita`@`%` PROCEDURE `pr_checkUserByEmail`(
+	IN `userEmail` VARCHAR(150)
+)
+LANGUAGE SQL
+NOT DETERMINISTIC
+CONTAINS SQL
+SQL SECURITY DEFINER
+COMMENT ''
+BEGIN
+    SELECT `login`
+    FROM `usuario`
+    WHERE `email` = userEmail
+    LIMIT 1;
+END
+DELIMITER ;
+
+CREATE DEFINER=`chanchita`@`%` PROCEDURE `pr_registerUser`(
+	IN `userLogin` VARCHAR(20),
+	IN `userFullname` VARCHAR(150),
+	IN `userEmail` VARCHAR(150),
+	IN `userPwd` VARCHAR(60)
+)
+LANGUAGE SQL
+NOT DETERMINISTIC
+CONTAINS SQL
+SQL SECURITY DEFINER
+COMMENT ''
+BEGIN
+    INSERT INTO `usuario` (`login`, `fullname`, `email`, `pwd`)
+    VALUES (userLogin, userFullname, userEmail, userPwd);
+END
 
 
