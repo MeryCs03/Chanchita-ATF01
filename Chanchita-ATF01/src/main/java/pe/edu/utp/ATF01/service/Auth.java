@@ -99,6 +99,12 @@ public class Auth {
         }
     }
 
+        public static String getDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'  'HH:mm:ss");
+        return now.format(formatter);
+    }
+
     /*
     * Link: https://stackoverflow.com/questions/9655181/java-convert-a-byte-array-to-a-hex-string
     * Nota: Metodo altetnativo para JDK17, pero se debe tener cuidado con tener este entorno activado
