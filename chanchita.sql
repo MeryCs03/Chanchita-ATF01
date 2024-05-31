@@ -1,8 +1,33 @@
--- Volcando estructura para tabla chanchita.Chanchita
+CREATE DATABASE IF NOT EXISTS chanchita;
+USE chanchita;
+
 CREATE TABLE IF NOT EXISTS `Chanchita` (
-  `Nombre` varchar(255) NOT NULL,
-  `NumeroCuenta` bigint(20) NOT NULL,
+  `Nombre` VARCHAR(255) NOT NULL,
+  `NumeroCuenta` BIGINT(20) NOT NULL,
   PRIMARY KEY (`NumeroCuenta`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `login` VARCHAR(20) NOT NULL COLLATE 'latin1_swedish_ci',
+  `fullname` VARCHAR(150) NOT NULL COLLATE 'latin1_swedish_ci',
+  `email` VARCHAR(150) NOT NULL COLLATE 'latin1_swedish_ci',
+  `pwd` CHAR(32) NOT NULL COLLATE 'latin1_swedish_ci',
+  UNIQUE (`email`),
+  PRIMARY KEY (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE IF NOT EXISTS `Deposito` (
+  `ID` INT(11) NOT NULL AUTO_INCREMENT,
+  `NumeroCuenta` BIGINT(20) NOT NULL,
+  `FechaHora` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `NombrePersona` VARCHAR(20) COLLATE 'latin1_swedish_ci' DEFAULT NULL,
+  `Monto` DECIMAL(10,2) DEFAULT NULL,
+  `Detalle` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `NumeroCuenta` (`NumeroCuenta`),
+  KEY `NombrePersona` (`NombrePersona`),
+  CONSTRAINT `Deposito_ibfk_1` FOREIGN KEY (`NumeroCuenta`) REFERENCES `Chanchita` (`NumeroCuenta`),
+  CONSTRAINT `Deposito_ibfk_2` FOREIGN KEY (`NombrePersona`) REFERENCES `usuario` (`login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --datosChanchita
@@ -15,20 +40,6 @@ INSERT INTO Chanchita (Nombre, NumeroCuenta) VALUES
 ('Noche de cine', 8024671357924680);
 
 
-
--- Volcando estructura para tabla chanchita.Deposito
-CREATE TABLE IF NOT EXISTS `Deposito` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `NumeroCuenta` bigint(20) NOT NULL,
-  `FechaHora` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `NombrePersona` varchar(255) DEFAULT NULL,
-  `Monto` decimal(10,2) DEFAULT NULL,
-  `Detalle` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `NumeroCuenta` (`NumeroCuenta`),
-  CONSTRAINT `Deposito_ibfk_1` FOREIGN KEY (`NumeroCuenta`) REFERENCES `Chanchita` (`NumeroCuenta`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=LATIN1_SWEDISH_CI;
-
 --datosDepositos
 INSERT INTO Deposito (NumeroCuenta, FechaHora, NombrePersona, Monto, Detalle) VALUES 
 (1234567890183456, '2024-05-30 17:55:38', 'Pijamada', 100.00, 'Depósito de pijamada'),
@@ -37,20 +48,6 @@ INSERT INTO Deposito (NumeroCuenta, FechaHora, NombrePersona, Monto, Detalle) VA
  (2468013579246801, '2024-05-30 17:55:38', 'Cevichada', 300.75, 'Depósito de cevichada'), 
  (3692581478523690, '2024-05-30 17:55:38', 'Sabado de playita', 180.25, 'Depósito de sábado de playita'), 
  (8024671357924680, '2024-05-30 17:55:38', 'Noche de cine', 250.30, 'Depósito de noche de cine');
-
-
-CREATE TABLE `usuario` (
-	`login` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	`fullname` VARCHAR(150) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	`email` VARCHAR(150) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	`pwd` CHAR(32) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	UNIQUE (`email`),
-	PRIMARY KEY (`login`)	
-)
-COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB
-;
-
 
 
 DELIMITER //
