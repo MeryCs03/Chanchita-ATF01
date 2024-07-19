@@ -50,12 +50,25 @@ public class RegistrarDepositosServlet extends HttpServlet {
                 String cnx = AppConfig.getDatasource();
                 ATF1service service = new ATF1service(dao, cnx);
 
-                service.RegistrarDeposito(dep);
-                resp.sendRedirect(req.getContextPath() + "/index_general.jsp");
+                if (service.RegistrarDeposito(dep) == 1) {
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Depósito registrado exitosamente!');");
+                    out.println("window.location.href = '" + req.getContextPath() + "/index_general.jsp';");
+                    out.println("</script>");
+                } else {
+                    String mensaje = "La cuenta " + dep.getNumero_Cuenta() + " no existe";
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('" + mensaje + "');");
+                    out.println("window.location.href = 'RegistrarDeposito.jsp';");
+                    out.println("</script>");
+                }
             } else {
-                String errMsg = String.format("Error al Deposito");
+                String errMsg = "Error al registrar el depósito";
                 LogFile.error(errMsg);
-                resp.sendRedirect("RegistrarDeposito.jsp");
+                out.println("<script type='text/javascript'>");
+                out.println("alert('Error al registrar el depósito.');");
+                out.println("window.location.href = 'RegistrarDeposito.jsp';");
+                out.println("</script>");
             }
 
         } catch (Exception e) {

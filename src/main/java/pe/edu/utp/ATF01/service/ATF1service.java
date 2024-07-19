@@ -61,7 +61,8 @@ public class ATF1service {
         }
     }
 
-    public void RegistrarDeposito(Deposito dep) throws SQLException {
+    public int RegistrarDeposito(Deposito dep) throws SQLException {
+        int aux = 0;
         try {
             String sql = "CALL RegistrarDeposito(?,?,?,?,?)";
             try (CallableStatement cs = cnn.prepareCall(sql)) {
@@ -71,13 +72,17 @@ public class ATF1service {
                 cs.setString(3, dep.getNombrePersona());
                 cs.setDouble(4, dep.getMonto());
                 cs.setString(5, dep.getDetalle());
-                cs.execute();
+                ResultSet res = cs.executeQuery();
+                if (res.next()) {
+                    aux = res.getInt(1);
+                }
             }
         } catch (SQLException e) {
             throw new SQLException("Error al registrar Deposito: " + e.getMessage());
         } finally {
             cerrarConexion();
         }
+        return aux;
     }
 
 
@@ -114,9 +119,10 @@ public class ATF1service {
             cerrarConexion();
         }
     }
+
     public void generarTablaDepositos(List<Deposito> depositos, StringBuilder sb) {
         String table = """
-               
+                               
                 <tr>
                 <td>{{nombre}}</td>
                 <td>{{fecha}}</td>
